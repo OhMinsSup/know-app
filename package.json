@@ -4,8 +4,9 @@
 	"scripts": {
 		"prepare": "husky install",
 		"pre-commit": "lint-staged",
-		"remove-css": "node --loader ts-node/esm scripts/js/remove-css-imports.ts",
-		"add-css": "node --loader ts-node/esm scripts/js/add-css-imports.ts",
+		"env-setup": "node --loader ts-node/esm scripts/environment.setup.ts",
+		"remove-css": "node --loader ts-node/esm scripts/remove-css-imports.ts",
+		"add-css": "node --loader ts-node/esm scripts/add-css-imports.ts",
 		"dev:postcss": "cross-env TAILWIND_MODE=build postcss src/styles/global.scss -o static/global.css -w",
 		"dev:postcss:tailwindcss": "cross-env STYLE_TYPE=TAILWIND TAILWIND_MODE=build postcss src/styles/tailwind.postcss -o static/tailwind.css -w",
 		"dev": "svelte-kit dev",
@@ -26,12 +27,15 @@
 		"@sveltejs/adapter-auto": "next",
 		"@sveltejs/kit": "next",
 		"@tailwindcss/typography": "^0.5.1",
+		"@types/shelljs": "^0.8.11",
 		"@typescript-eslint/eslint-plugin": "^5.10.1",
 		"@typescript-eslint/parser": "^5.10.1",
 		"autoprefixer": "^10.4.2",
+		"chalk": "^5.0.0",
 		"cross-env": "^7.0.3",
 		"cssnano": "^5.0.16",
 		"cssnano-preset-advanced": "^5.1.11",
+		"dotenv": "^16.0.0",
 		"eslint": "^7.32.0",
 		"eslint-config-prettier": "^8.3.0",
 		"eslint-plugin-svelte3": "^3.2.1",
@@ -45,10 +49,12 @@
 		"prettier-plugin-svelte": "^2.4.0",
 		"sass": "^1.49.7",
 		"sass-loader": "^12.4.0",
+		"shelljs": "^0.8.5",
 		"svelte": "^3.44.0",
 		"svelte-check": "^2.2.6",
 		"svelte-preprocess": "^4.9.4",
 		"tailwindcss": "^3.0.18",
+		"ts-node": "^10.4.0",
 		"tslib": "^2.3.1",
 		"typescript": "^4.4.3",
 		"vite-imagetools": "^4.0.3"
@@ -56,5 +62,6 @@
 	"type": "module",
 	"engines": {
 		"node": ">= 14.16.1"
-	}
+	},
+	"dependencies": {}
 }
