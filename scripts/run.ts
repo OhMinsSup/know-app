@@ -11,7 +11,6 @@ const program = new Commander.Command('know-app')
 		'어떤 .env.* 환경변수 파일을 사용할지 선택합니다.',
 		'local'
 	)
-	.option('-c --css <css>', 'css를 추가|삭제합니다.')
 	.allowUnknownOption()
 	.parse(process.argv);
 
@@ -102,52 +101,6 @@ function environmentStepUp(params: EnvironmentStepUp | undefined) {
 	console.log(`${chalk.green('Success!')} Created ${rootEnvironment}`);
 }
 
-function removeCssImports() {
-	const folderfiles = fs.readdirSync('./src/routes');
-	const rootLayout = folderfiles.filter((file) => file.includes('__layout.svelte'));
-	const pathToRootLayout = './src/routes/__layout.svelte';
-
-	if (rootLayout.length === 0) {
-		console.log(chalk.red('[addCssImports] - __layout.svelte is not found'));
-	} else {
-		const layout = fs.readFileSync(pathToRootLayout, {
-			encoding: 'utf8'
-		});
-		const writeToFile = (filePath: string, data: string | NodeJS.ArrayBufferView): void =>
-			fs.writeFileSync(filePath, data);
-		const updatedLayout = layout.replace("import '../styles/tailwind.postcss';", '');
-		writeToFile(pathToRootLayout, updatedLayout);
-	}
-}
-
-function addCssImports() {
-	const folderfiles = fs.readdirSync('./src/routes');
-	const rootLayout = folderfiles.filter((file) => file.includes('__layout.svelte'));
-	const pathToRootLayout = './src/routes/__layout.svelte';
-
-	if (rootLayout.length === 0) {
-		console.log(chalk.red('[addCssImports] - __layout.svelte is not found'));
-	} else {
-		const layout = fs.readFileSync(pathToRootLayout, {
-			encoding: 'utf8'
-		});
-		const writeToFile = (filePath: string, data: string | NodeJS.ArrayBufferView): void =>
-			fs.writeFileSync(filePath, data);
-		const isImportPresent = layout.includes("import '../styles/tailwind.postcss';");
-		if (isImportPresent) {
-			console.log(chalk.yellow('[addCssImports] - tailwind.postcss is already added'));
-		} else {
-			const updatedLayout = layout.replace(
-				'// Start: External Imports',
-				`// Start: External Imports
-		import '../styles/tailwind.postcss';`
-			);
-			console.log('updatedLayout ===>', updatedLayout);
-			writeToFile(pathToRootLayout, updatedLayout);
-		}
-	}
-}
-
 export function run() {
 	const options = program.opts();
 
@@ -162,21 +115,6 @@ export function run() {
 		rootEnvironment: '.env',
 		environment
 	});
-
-	if (options.css) {
-		const addCss = options.css.match(/^(yes|y|on)$/);
-		const removeCss = options.css.match(/^(no|n|off)$/);
-
-		if (addCss) {
-			console.log(chalk.yellow('[cli] - add css'));
-			addCssImports();
-			console.log(chalk.green('[cli] - add css done'));
-		} else if (removeCss) {
-			console.log(chalk.yellow('[cli] - remove css'));
-			removeCssImports();
-			console.log(chalk.green('[cli] - remove css done'));
-		}
-	}
 
 	return;
 }
